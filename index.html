@@ -113,10 +113,11 @@
   .adv .px small{font-size:12px;color:#666;font-weight:normal}
   .badge{display:inline;font-size:12.5px;font-weight:bold;white-space:nowrap;background:none;padding:0;border-radius:0}
   .adv .rows{margin-top:6px}
-  .adv .row{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:6px 0;border-bottom:1px dotted #e2e6ea}
-  .adv .row:last-of-type{border-bottom:0}
+  .adv .row{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:6px 0;border-bottom:1px dotted #e2e6ea}  .adv .row:last-of-type{border-bottom:0}
   .adv .row span{color:#666}
   .adv .row b{color:#223;text-align:right}
+  .adv .adv-actions{display:flex;gap:8px;margin-top:10px}
+  .adv .adv-actions .gbtn{flex:1;text-align:center}
   .good{color:#0c6b0c;font-weight:bold}.bad{color:#8a1c1c;font-weight:bold}
   .conf{font-size:12px;color:#666;margin-top:10px}
   .conf .bar{height:7px;background:#e8ecef;border-radius:10px;margin-top:4px;overflow:hidden}
@@ -412,6 +413,7 @@
           <div class="row"><span>Advice reason</span><b>Arrivals falling</b></div>
         </div>
         <div class="conf">Confidence<div class="bar"><i style="width:86%"></i></div></div>
+        <div class="adv-actions"><button type="button" class="gbtn green" data-crop="onion" onclick="openLotModal(this)">List this lot</button><a href="#" onclick="setPortal('farmer');window.gotoTab('logistics');return false;" class="gbtn ghost">Book storage</a></div>
       </div>
       <div class="adv">
         <div class="top">
@@ -428,7 +430,7 @@
           <div class="row"><span>Advice reason</span><b>Price declining</b></div>
         </div>
         <div class="conf">Confidence<div class="bar"><i style="width:91%"></i></div></div>
-        <div style="margin-top:10px"><button type="button" class="gbtn green" data-crop="tomato" onclick="openLotModal(this)">List this lot</button></div>
+        <div class="adv-actions"><button type="button" class="gbtn green" data-crop="tomato" onclick="openLotModal(this)">List this lot</button><a href="#" onclick="setPortal('farmer');window.gotoTab('logistics');return false;" class="gbtn ghost">Book storage</a></div>
       </div>
       <div class="adv">
         <div class="top">
@@ -445,7 +447,7 @@
           <div class="row"><span>Advice reason</span><b>Demand peak this week</b></div>
         </div>
         <div class="conf">Confidence<div class="bar"><i style="width:88%"></i></div></div>
-        <div style="margin-top:10px"><button type="button" class="gbtn green" data-crop="soybean" onclick="openLotModal(this)">List this lot</button></div>
+        <div class="adv-actions"><button type="button" class="gbtn green" data-crop="soybean" onclick="openLotModal(this)">List this lot</button><a href="#" onclick="setPortal('farmer');window.gotoTab('logistics');return false;" class="gbtn ghost">Book storage</a></div>
       </div>
     </div>
 
@@ -522,7 +524,7 @@
 
   <!-- FARMER: WHEN TO SELL -->
   <section id="advisor" class="tab">
-    <h2 class="sec-title">When to Sell</h2>
+    <h2 class="sec-title">When to Sell <span style="font-size:13px;color:#888;font-weight:normal">(AI prediction)</span></h2>
     <p class="sec-sub">3 years of mandi history + weather + live diesel price. Net of storage, fuel and transport. Sell now, wait 7 or wait 15 days.</p>
     <div class="grid c3">
       <div class="adv wait">
@@ -537,7 +539,7 @@
           <div class="row"><span>Advice reason</span><b>Arrivals falling</b></div>
         </div>
         <div class="conf">Confidence<div class="bar"><i style="width:86%"></i></div></div>
-        <div style="margin-top:10px"><a href="#" onclick="setPortal('farmer');window.gotoTab('logistics');return false;" class="gbtn ghost sm">Book storage</a></div>
+        <div class="adv-actions"><button type="button" class="gbtn green" data-crop="onion" onclick="openLotModal(this)">List this lot</button><a href="#" onclick="setPortal('farmer');window.gotoTab('logistics');return false;" class="gbtn ghost">Book storage</a></div>
       </div>
       <div class="adv">
         <div class="top"><div><div class="crop">Tomato - Hybrid</div><div class="mandi">Lasalgaon</div></div><div><span class="badge b-sell">Sell now</span></div></div>
@@ -551,7 +553,7 @@
           <div class="row"><span>Advice reason</span><b>Price declining</b></div>
         </div>
         <div class="conf">Confidence<div class="bar"><i style="width:91%"></i></div></div>
-        <div style="margin-top:10px"><button type="button" class="gbtn green" data-crop="tomato" onclick="openLotModal(this)">List this lot</button></div>
+        <div class="adv-actions"><button type="button" class="gbtn green" data-crop="tomato" onclick="openLotModal(this)">List this lot</button><a href="#" onclick="setPortal('farmer');window.gotoTab('logistics');return false;" class="gbtn ghost">Book storage</a></div>
       </div>
       <div class="adv">
         <div class="top"><div><div class="crop">Soybean - Yellow</div><div class="mandi">Latur</div></div><div><span class="badge b-sell">Sell now</span></div></div>
@@ -565,7 +567,7 @@
           <div class="row"><span>Advice reason</span><b>Demand peak this week</b></div>
         </div>
         <div class="conf">Confidence<div class="bar"><i style="width:88%"></i></div></div>
-        <div style="margin-top:10px"><button type="button" class="gbtn green" data-crop="soybean" onclick="openLotModal(this)">List this lot</button></div>
+        <div class="adv-actions"><button type="button" class="gbtn green" data-crop="soybean" onclick="openLotModal(this)">List this lot</button><a href="#" onclick="setPortal('farmer');window.gotoTab('logistics');return false;" class="gbtn ghost">Book storage</a></div>
       </div>
       <div class="adv wait">
         <div class="top"><div><div class="crop">Cotton - V-797</div><div class="mandi">Yavatmal</div></div><div><span class="badge b-late">Wait 7 days</span></div></div>
@@ -579,6 +581,7 @@
           <div class="row"><span>Advice reason</span><b>Ginning intake up 12%</b></div>
         </div>
         <div class="conf">Confidence<div class="bar"><i style="width:82%"></i></div></div>
+        <div class="adv-actions"><button type="button" class="gbtn green" data-crop="cotton" onclick="openLotModal(this)">List this lot</button><a href="#" onclick="setPortal('farmer');window.gotoTab('logistics');return false;" class="gbtn ghost">Book storage</a></div>
       </div>
       <div class="adv">
         <div class="top"><div><div class="crop">Tur / Arhar</div><div class="mandi">Latur</div></div><div><span class="badge b-sell">Sell now</span></div></div>
@@ -592,6 +595,7 @@
           <div class="row"><span>Advice reason</span><b>Price at peak</b></div>
         </div>
         <div class="conf">Confidence<div class="bar"><i style="width:90%"></i></div></div>
+        <div class="adv-actions"><button type="button" class="gbtn green" data-crop="tur" onclick="openLotModal(this)">List this lot</button><a href="#" onclick="setPortal('farmer');window.gotoTab('logistics');return false;" class="gbtn ghost">Book storage</a></div>
       </div>
       <div class="adv wait">
         <div class="top"><div><div class="crop">Grapes - Thompson</div><div class="mandi">Nashik</div></div><div><span class="badge b-late">Wait 15 days</span></div></div>
@@ -605,6 +609,7 @@
           <div class="row"><span>Advice reason</span><b>Export window opens</b></div>
         </div>
         <div class="conf">Confidence<div class="bar"><i style="width:79%"></i></div></div>
+        <div class="adv-actions"><button type="button" class="gbtn green" data-crop="grapes" onclick="openLotModal(this)">List this lot</button><a href="#" onclick="setPortal('farmer');window.gotoTab('logistics');return false;" class="gbtn ghost">Book storage</a></div>
       </div>
     </div>
     <div class="panel" style="margin-top:16px">
@@ -1048,7 +1053,6 @@
 <!-- ===== FOOTER ===== -->
 <footer>
   <div class="foot">
-    <div class="tristrip"><span class="ts1"></span><span class="ts2"></span><span class="ts3"></span></div>
     <p><b>SasyaSetu</b> - proposed solution for SIH 2026, PS 26132 (Strengthening market linkages and price discovery for farmers). Department: Skills, Employment, Entrepreneurship and Innovation, Government of Maharashtra. Data shown is illustrative.</p>
     <p>Page last reviewed <span id="today2"></span>. Hosted by Maharashtra State Innovation Society, Pune.</p>
     <div class="row">
