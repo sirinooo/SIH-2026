@@ -224,6 +224,29 @@
   .foot .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;border-top:1px solid #d8dee4;padding-top:10px;margin-top:10px}
   .foot .tristrip{margin-bottom:10px}
 
+  /* --- grievance chat FAB --- */
+  #grievance-fab{position:fixed;right:16px;bottom:16px;z-index:220;display:none;align-items:center;gap:7px;background:#138808;color:#fff;border:0;border-radius:26px;padding:9px 14px;font-size:12.5px;font-weight:bold;font-family:inherit;cursor:pointer;box-shadow:0 8px 20px rgba(19,136,8,.45);max-width:calc(100vw - 32px);white-space:nowrap}
+  #grievance-fab.on{display:inline-flex}
+  #grievance-fab .dot{width:9px;height:9px;border-radius:50%;background:#fff;animation:pulse 1.4s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  #grievance-chat{position:fixed;right:20px;bottom:74px;z-index:220;width:min(360px,92vw);display:none;flex-direction:column;background:#fff;border-radius:16px;box-shadow:0 24px 60px rgba(10,30,20,.4);overflow:hidden;font-size:13.5px}
+  #grievance-chat.on{display:flex}
+  #grievance-chat .ch-head{background:#0f2b66;color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px}
+  #grievance-chat .ch-head .ava{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-weight:bold}
+  #grievance-chat .ch-head b{font-size:14px}
+  #grievance-chat .ch-head .sub{font-size:11px;color:#cfe3f5}
+  #grievance-chat .ch-head button{margin-left:auto;background:rgba(255,255,255,.15);border:0;color:#fff;width:28px;height:28px;border-radius:8px;cursor:pointer;font-weight:bold}
+  #grievance-chat .ch-body{height:260px;overflow:auto;padding:12px;background:#f3f5f7;display:flex;flex-direction:column;gap:8px}
+  #grievance-chat .bubble{max-width:85%;padding:9px 12px;border-radius:12px;line-height:1.45;white-space:pre-wrap}
+  #grievance-chat .bubble.bot{background:#e4e9f2;color:#223;align-self:flex-start;border-bottom-left-radius:4px}
+  #grievance-chat .bubble.user{background:#138808;color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+  #grievance-chat .chips{padding:10px 12px 6px;display:flex;flex-wrap:wrap;gap:7px;border-top:1px solid #eef1f4}
+  #grievance-chat .chip{border:1px solid #138808;color:#0c3b2e;background:#f1fbf1;border-radius:20px;padding:6px 12px;font-size:12px;cursor:pointer;font-family:inherit;font-weight:600}
+  #grievance-chat .chip:hover{background:#138808;color:#fff}
+  #grievance-chat .ch-input{display:flex;gap:8px;padding:10px 12px;border-top:1px solid #eef1f4}
+  #grievance-chat .ch-input input{flex:1;border:1px solid #c9d2dc;border-radius:10px;padding:9px 11px;font-size:13px;font-family:inherit}
+  #grievance-chat .ch-input button{background:#138808;color:#fff;border:0;border-radius:10px;padding:0 16px;font-weight:bold;font-family:inherit;cursor:pointer}
+
   @media(max-width:640px){
     .mast h1{font-size:24px}.mast .slogo{width:46px;height:46px;flex-basis:46px}.mast-right{margin-left:0;text-align:left}
     main{padding:12px}.hello .today{margin-left:0;text-align:left}
@@ -645,7 +668,7 @@
         <div class="nm"><b>Vasundhara Processors</b><span class="stars">★★★★★ <span>4.6 / 5</span></span></div>
         <div class="meta">Nashik · 38 km · Tomato processing</div>
         <div class="deal"><span class="pill">Pays on time 95%</span><span class="pill">78 deals</span><span class="pill">GST registered</span></div>
-        <div class="offer">Offer: <b>Tomato - Rs. 1,320/q</b><br>Min 25 q · Grade A</div>
+        <div class="offer">Offer: <b>Tomato - Rs. 1,320/q</b><br>Min 25 q</div>
         <div class="btns"><button type="button" class="gbtn green" data-accept="2" onclick="openAcceptModal(this)">Accept offer</button></div>
       </div>
       <div class="buyer">
@@ -769,7 +792,7 @@
     <h2 class="sec-title">How buying works</h2>
     <p class="sec-sub">Browse open lots, place an offer, farmer accepts, department tracks the deal to payment.</p>
     <div class="grid c3" style="margin-top:12px">
-      <div class="panel" style="margin:0"><b>1. Browse lots</b><p class="sec-sub">Commodity, grade and quantity listed by FPOs.</p></div>
+      <div class="panel" style="margin:0"><b>1. Browse lots</b><p class="sec-sub">Commodity, quantity and location listed by FPOs.</p></div>
       <div class="panel" style="margin:0"><b>2. Place offer</b><p class="sec-sub">Your best rate per quintal / box.</p></div>
       <div class="panel" style="margin:0"><b>3. Dealtrack</b><p class="sec-sub">Status changes: Pending to Accepted to Paid.</p></div>
     </div>
@@ -1048,7 +1071,66 @@
   </div>
 </div>
 
+<!-- ===== MEETING / PICKUP SCHEDULER ===== -->
+<div class="overlay" id="soverlay" onclick="if(event.target===this)closeMeetModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <b id="sTitle">Schedule pickup</b>
+      <button type="button" onclick="closeMeetModal()">X</button>
+    </div>
+    <div class="modal-body">
+      <div class="fld">
+        <label id="sLotLabel">Lot</label>
+        <div class="hint" id="sLotInfo" style="margin-top:6px"></div>
+      </div>
+      <div class="fldr">
+        <div class="fld">
+          <label>Date</label>
+          <input type="date" id="sDate">
+        </div>
+        <div class="fld">
+          <label>Time</label>
+          <input type="time" id="sTime" value="09:00">
+        </div>
+      </div>
+      <div class="fld">
+        <label>Place / meeting point</label>
+        <input type="text" id="sPlace" placeholder="e.g. Village godown, Latur">
+        <div class="hint">Both parties agree on a time and place for physical pickup &amp; quality verification.</div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="gbtn ghost" onclick="closeMeetModal()">Cancel</button>
+      <button type="button" class="gbtn green" onclick="confirmMeeting()">Confirm meeting</button>
+    </div>
+  </div>
+</div>
+
 <div class="toasts" id="toasts"></div>
+
+<!-- ===== FLOATING GRIEVANCE CHAT (farmer & buyer) ===== -->
+<button type="button" id="grievance-fab" onclick="toggleChat()"><span class="dot"></span>Help</button>
+<div id="grievance-chat">
+  <div class="ch-head">
+    <div class="ava">R</div>
+    <div>
+      <b>SasyaSetu Care</b>
+      <div class="sub">Raise a grievance · logged in 48h</div>
+    </div>
+    <button type="button" onclick="toggleChat()" title="Close">X</button>
+  </div>
+  <div class="ch-body" id="chatBody"></div>
+  <div class="chips" id="chatChips">
+    <button type="button" class="chip" onclick="quickGrievance('Payment delay')">Payment delay</button>
+    <button type="button" class="chip" onclick="quickGrievance('Weighbridge mismatch')">Weighbridge mismatch</button>
+    <button type="button" class="chip" onclick="quickGrievance('Buyer not responding')">Buyer not responding</button>
+    <button type="button" class="chip" onclick="quickGrievance('Quality / pickup dispute')">Quality / pickup dispute</button>
+  </div>
+  <div class="ch-input">
+    <input type="text" id="chatInput" placeholder="Type your complaint..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button type="button" onclick="sendChat()">Send</button>
+  </div>
+</div>
 
 <!-- ===== FOOTER ===== -->
 <footer>
@@ -1230,32 +1312,33 @@ function barCompare(container, items, unit, opts){
 
 /* ---------- farmer lots (data-driven) ---------- */
 var lotsData=[
-  ['LOT NGP-8321','12 Aug 2026','Onion - Nagpur 100','A1','40 q','R.K. Agro Traders (Nagpur, 12 km)','Rs. 2,140 / q','Rs. 85,600','Pickup at village. Quality checked by FPO supervisor.','Offer received','offer'],
-  ['LOT PUN-0781','09 Aug 2026','Grapes - Thompson','Export','120 boxes','Maharashtra Agro Exports (Pune, 140 km)','Rs. 1,850 / box','Rs. 2,22,000','Cold-chain dispatch. E-way bill attached.','Payment cleared','paid'],
-  ['LOT LAT-0692','05 Aug 2026','Soybean - Yellow','A2','25 q','Shree Agencies (Latur, 22 km)','Rs. 4,350 / q','Rs. 1,08,750','Moisture 9.2%. Weighbridge report attached.','Graded','graded'],
-  ['LOT YTM-0587','28 Jul 2026','Cotton - V-797','A1','15 q','R.K. Agro Traders (Nagpur, 62 km)','Rs. 7,120 / q','Rs. 1,06,800','Weight dispute resolved in 48 hours.','Resolved','resolved']
+  ['LOT NGP-8321','12 Aug 2026','Onion - Nagpur 100','40 q','R.K. Agro Traders (Nagpur, 12 km)','Rs. 2,140 / q','Rs. 85,600','Pickup at village. Quality checked by FPO supervisor.','Offer received','offer'],
+  ['LOT PUN-0781','09 Aug 2026','Grapes - Thompson','120 boxes','Maharashtra Agro Exports (Pune, 140 km)','Rs. 1,850 / box','Rs. 2,22,000','Cold-chain dispatch. E-way bill attached.','Payment cleared','paid'],
+  ['LOT LAT-0692','05 Aug 2026','Soybean - Yellow','25 q','Shree Agencies (Latur, 22 km)','Rs. 4,350 / q','Rs. 1,08,750','Moisture 9.2%. Weighbridge report attached.','Graded','graded'],
+  ['LOT YTM-0587','28 Jul 2026','Cotton - V-797','15 q','R.K. Agro Traders (Nagpur, 62 km)','Rs. 7,120 / q','Rs. 1,06,800','Weight dispute resolved in 48 hours.','Resolved','resolved']
 ];
 function buildLots(){
   var L=LBL[Lang];
   var html='';
   lotsData.forEach(function(l){
+    var agreed=(l[8].indexOf('received')>-1||l[8]==='Graded');
     html+='<div class="lot">'+
-      '<div class="lothead"><div class="code">'+l[0]+'<span class="date">'+l[1]+'</span></div><span class="st '+l[11]+'">'+tr(l[10])+'</span></div>'+
+      '<div class="lothead"><div class="code">'+l[0]+'<span class="date">'+l[1]+'</span></div><span class="st '+l[9]+'">'+tr(l[8])+'</span></div>'+
       '<div class="lbody">'+
         '<div class="fld"><span>'+L.Commodity+'</span><b>'+l[2]+'</b></div>'+
-        '<div class="fld"><span>'+L.Grade+'</span><b>'+l[3]+'</b></div>'+
-        '<div class="fld"><span>'+L.Quantity+'</span><b>'+l[4]+'</b></div>'+
-        '<div class="fld"><span>'+L.Buyer+'</span><b>'+tr(l[5])+'</b></div>'+
-        '<div class="fld"><span>'+L.OfferRate+'</span><b>'+l[6]+'</b></div>'+
-        '<div class="fld"><span>'+L.Total+'</span><b>'+l[7]+'</b></div>'+
-        '<div class="remarks">'+L.Remark+': '+l[8]+'</div>'+
+        '<div class="fld"><span>'+L.Quantity+'</span><b>'+l[3]+'</b></div>'+
+        '<div class="fld"><span>'+L.Buyer+'</span><b>'+tr(l[4])+'</b></div>'+
+        '<div class="fld"><span>'+L.OfferRate+'</span><b>'+l[5]+'</b></div>'+
+        '<div class="fld"><span>'+L.Total+'</span><b>'+l[6]+'</b></div>'+
+        '<div class="remarks">'+L.Remark+': '+l[7]+'</div>'+
+        (agreed?'<div class="remarks"><button type="button" class="gbtn sm" data-lot="'+l[0]+'" onclick="openMeetModal(this,\'farmer\')">'+tr('Schedule pickup')+'</button></div>':'')+
       '</div></div>';
   });
   $('lotlist').innerHTML=html;
   var ah='<table class="otable"><thead><tr><th>'+L.Lot+'</th><th>'+L.Commodity+'</th><th>'+L.Qty+'</th><th>'+L.Buyer+'</th><th>'+L.Amount+'</th><th>'+L.Payment+'</th></tr></thead><tbody>';
   lotsData.forEach(function(l){
-    var cls=l[10].indexOf('cleared')>-1?'st live':(l[10].indexOf('received')>-1?'st pending':(l[10]==='Resolved'?'st live':'st pending'));
-    ah+='<tr><td>'+l[0]+'</td><td>'+l[2]+'</td><td>'+l[4]+'</td><td>'+tr(l[5])+'</td><td>'+l[7]+'</td><td class="stt '+cls+'">'+tr(l[10])+'</td></tr>';
+    var cls=l[8].indexOf('cleared')>-1?'st live':(l[8].indexOf('received')>-1?'st pending':(l[8]==='Resolved'?'st live':'st pending'));
+    ah+='<tr><td>'+l[0]+'</td><td>'+l[2]+'</td><td>'+l[3]+'</td><td>'+tr(l[4])+'</td><td>'+l[6]+'</td><td class="stt '+cls+'">'+tr(l[8])+'</td></tr>';
   });
   ah+='</tbody></table>';
   $('admintable').innerHTML=ah;
@@ -1337,7 +1420,7 @@ function submitLot(){
   var remark=(bidx>0)
     ?'Offer of '+fmtIN(rate)+' per '+unit+' accepted. Awaiting pickup confirmation.'
     :'Listed on marketplace. Awaiting first offer.';
-  lotsData.unshift([code,todayN(),c[1],'Not yet graded',qtyTxt,buyerTxt,(rate>0?fmtIN(rate)+' / '+unit:'-'),total,remark,statusTxt,statusCls]);
+  lotsData.unshift([code,todayN(),c[1],qtyTxt,buyerTxt,(rate>0?fmtIN(rate)+' / '+unit:'-'),total,remark,statusTxt,statusCls]);
   buildLots(); closeModal();
   toast('Added '+code+' - '+c[1]+', '+qtyTxt+'. Demo data only.');
   setPortal('farmer'); activateNav($('navFarmer'),'lots');
@@ -1345,11 +1428,11 @@ function submitLot(){
 
 /* ---------- buyer portal: marketplace + offers ---------- */
 var MARKET=[
-  ['MKT NGP-9321','Onion - Nagpur 100','A1','35 q','Nagpur APMC','Rs. 2,120 / q','JaiSankalp FPO','12 Aug 2026'],
-  ['MKT LSN-8802','Tomato - Hybrid','B','60 q','Lasalgaon','Rs. 1,190 / q','Sitara FPO','11 Aug 2026'],
-  ['MKT LTR-7703','Soybean - Yellow','A2','28 q','Latur','Rs. 4,320 / q','Marathwada Green','12 Aug 2026'],
-  ['MKT YTM-6455','Cotton - V-797','A1','18 q','Yavatmal','Rs. 7,080 / q','Kisan Vahini','10 Aug 2026'],
-  ['MKT NSK-2313','Grapes - Thompson','Export','90 boxes','Nashik','Rs. 1,900 / box','Nashik Grapes Co.','11 Aug 2026']
+  ['MKT NGP-9321','Onion - Nagpur 100','35 q','Nagpur APMC','Rs. 2,120 / q','JaiSankalp FPO','12 Aug 2026'],
+  ['MKT LSN-8802','Tomato - Hybrid','60 q','Lasalgaon','Rs. 1,190 / q','Sitara FPO','11 Aug 2026'],
+  ['MKT LTR-7703','Soybean - Yellow','28 q','Latur','Rs. 4,320 / q','Marathwada Green','12 Aug 2026'],
+  ['MKT YTM-6455','Cotton - V-797','18 q','Yavatmal','Rs. 7,080 / q','Kisan Vahini','10 Aug 2026'],
+  ['MKT NSK-2313','Grapes - Thompson','90 boxes','Nashik','Rs. 1,900 / box','Nashik Grapes Co.','11 Aug 2026']
 ];
 var buyerOffers=[
   ['MKT LTR-7703','Soybean - Yellow','28 q','Rs. 4,390 / q','Rs. 1,22,920','11 Aug 2026','Accepted'],
@@ -1361,14 +1444,13 @@ function buildBMarket(){
   var html='';
   MARKET.forEach(function(m){
     html+='<div class="lot">'+
-      '<div class="lothead"><div class="code">'+m[0]+'<span class="date">'+m[6]+' · '+m[7]+'</span></div><span class="st listed">'+tr('Open lot')+'</span></div>'+
+      '<div class="lothead"><div class="code">'+m[0]+'<span class="date">'+m[6]+' · '+m[5]+'</span></div><span class="st listed">'+tr('Open lot')+'</span></div>'+
       '<div class="lbody">'+
         '<div class="fld"><span>'+L.Commodity+'</span><b>'+m[1]+'</b></div>'+
-        '<div class="fld"><span>'+L.Grade+'</span><b>'+m[2]+'</b></div>'+
-        '<div class="fld"><span>'+L.Quantity+'</span><b>'+m[3]+'</b></div>'+
-        '<div class="fld"><span>'+L.Mandi+'</span><b>'+m[4]+'</b></div>'+
-        '<div class="fld"><span>'+L.Asking+'</span><b>'+m[5]+'</b></div>'+
-        '<div class="fld"><span>'+L.Seller+'</span><b>'+m[6]+'</b></div>'+
+        '<div class="fld"><span>'+L.Quantity+'</span><b>'+m[2]+'</b></div>'+
+        '<div class="fld"><span>'+L.Mandi+'</span><b>'+m[3]+'</b></div>'+
+        '<div class="fld"><span>'+L.Asking+'</span><b>'+m[4]+'</b></div>'+
+        '<div class="fld"><span>'+L.Seller+'</span><b>'+m[5]+'</b></div>'+
         '<div class="remarks"><button type="button" class="gbtn sm" data-lot="'+m[0]+'" onclick="openBuyModal(this)">'+tr('Place offer')+'</button></div>'+
       '</div></div>';
   });
@@ -1379,23 +1461,26 @@ function stCls(s){
 }
 function buildOffers(){
   var L=LBL[Lang];
-  var html='<table class="otable"><thead><tr><th>'+L.Lot+'</th><th>'+L.Commodity+'</th><th>'+L.Qty+'</th><th>'+L.MyRate+'</th><th>'+L.TotalValue+'</th><th>'+L.Posted+'</th><th>'+L.Status+'</th></tr></thead><tbody>';
+  var html='<table class="otable"><thead><tr><th>'+L.Lot+'</th><th>'+L.Commodity+'</th><th>'+L.Qty+'</th><th>'+L.MyRate+'</th><th>'+L.TotalValue+'</th><th>'+L.Posted+'</th><th>'+L.Status+'</th><th></th></tr></thead><tbody>';
   buyerOffers.forEach(function(o){
-    html+='<tr><td>'+o[0]+'</td><td>'+o[1]+'</td><td>'+o[2]+'</td><td>'+o[3]+'</td><td>'+o[4]+'</td><td>'+o[5]+'</td><td class="stt '+stCls(o[6])+'">'+tr(o[6])+'</td></tr>';
+    var btn=(o[6]==='Accepted')
+      ?'<button type="button" class="gbtn sm" data-lot="'+o[0]+'" onclick="openMeetModal(this,\'buyer\')">'+tr('Schedule meeting')+'</button>'
+      :'';
+    html+='<tr><td>'+o[0]+'</td><td>'+o[1]+'</td><td>'+o[2]+'</td><td>'+o[3]+'</td><td>'+o[4]+'</td><td>'+o[5]+'</td><td class="stt '+stCls(o[6])+'">'+tr(o[6])+'</td><td>'+btn+'</td></tr>';
   });
   html+='</tbody></table>';
   $('bofferslist').innerHTML=html;
 }
 function fillBuyLots(){
   var s=$('bLot'); s.innerHTML='';
-  MARKET.forEach(function(m){var o=document.createElement('option');o.value=m[0];o.textContent=m[0]+' - '+m[1]+' ('+m[3]+')';s.appendChild(o);});
+  MARKET.forEach(function(m){var o=document.createElement('option');o.value=m[0];o.textContent=m[0]+' - '+m[1]+' ('+m[2]+')';s.appendChild(o);});
 }
 function onBuyLotChange(){
   var m=MARKET.filter(function(x){return x[0]===$('bLot').value;})[0];
   if(!m)return;
-  $('bQty').value=parseInt(m[3],10)||0;
-  $('bRate').value=parseInt(m[5].replace(/[^0-9]/g,''),10)||0;
-  $('bLotInfo').textContent=m[1]+' · '+m[2]+' grade · '+m[4]+' · seller: '+m[6];
+  $('bQty').value=parseInt(m[2],10)||0;
+  $('bRate').value=parseInt(m[4].replace(/[^0-9]/g,''),10)||0;
+  $('bLotInfo').textContent=m[1]+' · '+m[3]+' · seller: '+m[5];
 }
 $('bLot').addEventListener('change',onBuyLotChange);
 function openBuyModal(src){
@@ -1414,14 +1499,73 @@ function placeOffer(){
   var rate=parseFloat($('bRate').value)||0;
   if(qty<=0){toast('Enter a quantity.');return;}
   if(rate<=0){toast('Enter an offer rate.');return;}
-  var unit=(lot[3].indexOf('box')>-1)?'boxes':'q';
+  var unit=(lot[2].indexOf('box')>-1)?'boxes':'q';
   var company=$('bCompany').value.trim()||'Poonam Traders';
   var total=fmtIN(qty*rate);
   buyerOffers.unshift([lot[0],lot[1],qty+' '+unit,fmtIN(rate)+' / '+unit,total,todayN(),'Pending']);
-  lotsData.unshift(['LOT-'+lot[0].split(' ')[1]+'-'+(9000+Math.floor(Math.random()*900)),todayN(),lot[1],'Not yet graded',qty+' '+unit,company+' (buyer)',fmtIN(rate)+' / '+unit,total,'Offer placed by buyer. Awaiting farmer acceptance.','Offer received','offer']);
+  lotsData.unshift(['LOT-'+lot[0].split(' ')[1]+'-'+(9000+Math.floor(Math.random()*900)),todayN(),lot[1],qty+' '+unit,company+' (buyer)',fmtIN(rate)+' / '+unit,total,'Offer placed by buyer. Awaiting farmer acceptance.','Offer received','offer']);
   buildLots(); buildBMarket(); buildOffers(); closeBuyModal();
   toast('Offer placed on '+lot[0]+'. Farmer and admin can now see it (demo).');
   activateNav($('navBuyer'),'boffers');
+}
+
+/* ---------- meeting / pickup scheduler ---------- */
+var meetLot=''; var meetSide='';
+function openMeetModal(src,side){
+  meetLot=src.dataset.lot; meetSide=side;
+  var info=(side==='buyer')
+    ?meetLot+' - '+tr('Accepted offer. Confirm pickup with the FPO.')
+    :meetLot+' - '+tr('Agreed deal. Confirm pickup with the buyer.');
+  $('sLotInfo').textContent=info;
+  $('sTitle').textContent=(side==='buyer')?tr('Schedule meeting'):tr('Schedule pickup');
+  $('sDate').valueAsDate=new Date();
+  $('sPlace').value='';
+  $('soverlay').classList.add('on');
+}
+function closeMeetModal(){$('soverlay').classList.remove('on');}
+function confirmMeeting(){
+  var d=$('sDate').value, t=$('sTime').value, p=$('sPlace').value.trim();
+  if(!d){toast(tr('Pick a date first.'));return;}
+  if(!p){toast(tr('Enter a place.'));return;}
+  var dt=new Date(d+'T'+t).toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  var msg=(meetSide==='buyer')
+    ?('Meeting scheduled - '+meetLot+' - '+dt+' at '+p+'. Both parties notified (demo).')
+    :('Pickup scheduled - '+meetLot+' - '+dt+' at '+p+'. Buyer notified for verification (demo).');
+  closeMeetModal();
+  toast(msg);
+}
+
+/* ---------- floating grievance chat ---------- */
+var chatOpen=false; var grievanceSeq=1043;
+function chatBubble(txt,who){
+  var d=document.createElement('div');
+  d.className='bubble '+(who||'bot');
+  d.textContent=txt;
+  $('chatBody').appendChild(d);
+  $('chatBody').scrollTop=$('chatBody').scrollHeight;
+}
+function toggleChat(force){
+  var open=(typeof force==='boolean')?force:!chatOpen;
+  chatOpen=open;
+  $('grievance-chat').classList.toggle('on',open);
+  if(open&&!$('chatBody').childNodes.length){
+    chatBubble('Namaskar! How can we help?');
+    chatBubble('Tap a topic below or type your complaint. It is routed to the Department Admin grievance desk.');
+  }
+  if(!open){$('chatInput').value='';}
+}
+function quickGrievance(cat){ $('chatInput').value=cat; sendChat(); }
+function sendChat(){
+  var v=$('chatInput').value.trim();
+  if(!v){return;}
+  chatBubble(v,'user');
+  $('chatInput').value='';
+  var code='GRI-'+grievanceSeq++;
+  setTimeout(function(){
+    chatBubble('Complaint '+code+' logged: "'+v+'"');
+    chatBubble('Our desk will respond in Office-48h. Track it under Department > Grievances.');
+    toast(code+' logged. Demo grievance created.');
+  },500);
 }
 
 /* ---------- admin / govt actions ---------- */
@@ -1627,6 +1771,12 @@ var TR={
   'Delivered':{en:'Delivered',mr:'वितरित'},
   'In-transit':{en:'In-transit',mr:'वाहतुकीत'},
   'Scheduled':{en:'Scheduled',mr:'नियोजित'},
+  'Schedule pickup':{en:'Schedule pickup',mr:'पिकअप नियोजित करा'},
+  'Schedule meeting':{en:'Schedule meeting',mr:'भेट नियोजित करा'},
+  'Pick a date first.':{en:'Pick a date first.',mr:'प्रथम तारीख निवडा.'},
+  'Enter a place.':{en:'Enter a place.',mr:'ठिकाण प्रविष्ट करा.'},
+  'Agreed deal. Confirm pickup with the buyer.':{en:'Agreed deal. Confirm pickup with the buyer.',mr:'सहमत व्यवहार. खरेदीदारासोबत पिकअप पक्का करा.'},
+  'Accepted offer. Confirm pickup with the FPO.':{en:'Accepted offer. Confirm pickup with the FPO.',mr:'स्वीकारलेला ऑफर. FPO सोबत पिकअप पक्का करा.'},
   'My storage':{en:'My storage',mr:'माझी साठवणूक'},
   'Storage cost':{en:'Storage cost',mr:'साठवणूक खर्च'},
   'Transport':{en:'Transport',mr:'वाहतूक'},
@@ -1744,6 +1894,8 @@ function setPortal(p){
   var first=nav.querySelector('button[data-tab]');
   activateNav(nav,first?first.dataset.tab:null);
   window.scrollTo(0,0);
+  var fab=$('grievance-fab');
+  if(fab){ fab.classList.toggle('on',p==='farmer'||p==='buyer'); if(!(p==='farmer'||p==='buyer')) toggleChat(false); }
 }
 </script>
 </body>
